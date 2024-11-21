@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
 
-export default  function Word({word : w}) {
+export default function Word({ word: w }) {
     const [isShow, setIsShow] = useState(false);
     const [isDone, setIsDone] = useState(w.isDone)
     const [word, setWord] = useState(w);
-    function toggleShow(){
+    function toggleShow() {
         setIsShow(!isShow);
     }
-    function toggleDone(){
+    function toggleDone() {
         fetch(`http://localhost:3001/words/${word.id}`, {
             method: "PUT",
             headers: {
@@ -19,34 +19,34 @@ export default  function Word({word : w}) {
                 isDone: !isDone,
             }),
         }).then(res => {
-            if(res.ok){
+            if (res.ok) {
                 setIsDone(!isDone);
             }
         })
     }
 
-    function del (){
-        if(window.confirm('삭제 하시겠습니까?')){
+    function del() {
+        if (window.confirm('삭제 하시겠습니까?')) {
             fetch(`http://localhost:3001/words/${word.id}`, {
-                method : 'DELETE',
-        }).then(res => {
-            setWord({id:0});
-        })
+                method: 'DELETE',
+            }).then(res => {
+                setWord({ id: 0 });
+            })
         }
     }
-    if(word.id === 0 ){
+    if (word.id === 0) {
         return null;
     }
 
-    return(
+    return (
         <tr className={isDone ? 'off' : ""}>
             <td>
-                <input type ="checkbox" checked={isDone}onClick={toggleDone}></input>
+                <input type="checkbox" checked={isDone} onClick={toggleDone}></input>
             </td>
             <td>{word.eng}</td>
             <td>{isShow && word.kor}</td>
             <td>
-                <button onClick={toggleShow}>{ isShow ?"숨기기" : "뜻보기"}</button>
+                <button onClick={toggleShow}>{isShow ? "숨기기" : "뜻보기"}</button>
                 <button onClick={del} class="btn_del">삭제</button>
             </td>
         </tr>
